@@ -75,14 +75,12 @@ public class Robots_VR_ControllerButtons : MonoBehaviour
 
         //this.gameObject.GetComponent<Robots_DrawLine>().LineStart();
 
-        sceneManager.GetComponent<Robots_BringTargetToMe>().RemoteRotateStart();
     }
     void UnClick(object sender, ClickedEventArgs e)
     {
         Debug.Log("hey i UN clicked the trigger button");
 
         //this.gameObject.GetComponent<Robots_DrawLine>().LineStop();
-        sceneManager.GetComponent<Robots_BringTargetToMe>().RemoteRotateStop();
 
 
     }
@@ -97,13 +95,11 @@ public class Robots_VR_ControllerButtons : MonoBehaviour
         float PadLimitLow = 0.3f;
         if (e.padX < -(PadLimitHigh) && e.padY < PadLimitLow)
         { //Left
-            sceneManager.GetComponent<Robots_BringTargetToMe>().PrevPoint();
 
         }
         else if (e.padX > PadLimitHigh && e.padY < PadLimitLow)
         { //Right
 
-            sceneManager.GetComponent<Robots_BringTargetToMe>().NextPoint();
 
         }
 
@@ -126,7 +122,7 @@ public class Robots_VR_ControllerButtons : MonoBehaviour
 
     void Gripped(object sender, ClickedEventArgs e)
     {
-        sceneManager.GetComponent<Robots_BringTargetToMe>().SendAllPointsToMachina();
+        //sceneManager.GetComponent<Robots_BringTargetToMe>().SendAllPointsToMachina();
 
 
         Debug.Log("hey i clicked the grip button");

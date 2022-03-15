@@ -12,6 +12,7 @@ public class HS_CameraPlatformManager : MonoBehaviour
     [Header("AR Stuff")]
     public GameObject ARCameraParent;
     public GameObject ARCanvasParent;
+    public GameObject ARCamera;
     //public GameObject iOSShadowPlane;
 
     [Header("VR Stuff")]
@@ -33,6 +34,7 @@ public class HS_CameraPlatformManager : MonoBehaviour
         VRCanvasParent.SetActive(true);
         WebGLCanvasParent.SetActive(false);
         ARCameraParent.SetActive(false);
+        ARCamera.SetActive(false);
         ARCanvasParent.SetActive(false);
         ARObject.SetActive(true);
 
@@ -59,6 +61,8 @@ public class HS_CameraPlatformManager : MonoBehaviour
             WebGLCanvasParent.SetActive(true);
 
             ARCameraParent.SetActive(false);
+                    ARCamera.SetActive(false);
+
             ARCanvasParent.SetActive(false);
             //iOSShadowPlane.SetActive(false);
 
@@ -74,6 +78,8 @@ public class HS_CameraPlatformManager : MonoBehaviour
         WebGLCanvasParent.SetActive(false);
 
         ARCameraParent.SetActive(true);
+                ARCamera.SetActive(true);
+
         ARCanvasParent.SetActive(true);
         //iOSShadowPlane.SetActive(true);
 
@@ -92,6 +98,7 @@ public class HS_CameraPlatformManager : MonoBehaviour
         WebGLCanvasParent.SetActive(false);
 
         ARCameraParent.SetActive(true);
+                ARCamera.SetActive(true);
         ARCanvasParent.SetActive(true);
         //iOSShadowPlane.SetActive(true);
 

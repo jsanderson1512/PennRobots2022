@@ -32,15 +32,14 @@ public class ConnectToMachina : MonoBehaviour
     private string textForConsole;
     public GameObject followerRobot;
     public GameObject controllerRobot;
-    public GameObject importedPointsParent;
     public GameObject modelTarget;
+
 
 #if UNITY_STANDALONE_WIN
     [HideInInspector]
     public WebSocket machinaBridgeSocket;
 
 #endif
-
 
     private Vector3 slavePos;
     private Quaternion slaveRot;
@@ -120,108 +119,10 @@ public class ConnectToMachina : MonoBehaviour
             if (e.Data.Contains("action-issued"))
             {
                 textForConsole = "Action Issued";
-
-                string[] messageComponents = e.Data.Split(':');
-                string myPlane = "";
-                string myRot = "";
-
-                //Message Received from ws://127.0.0.1:6999/Bridge?name=Unity, Data : {"event":"action-executed",
-                //"last":"Message(\"0,675.4,460.66,1211.6,0,0,1,0,-1,0,1,0,0\");","id":16,"pendDev":2,"pendTot":2,"pos":[1251.913,0,1502.5],"ori":[-0.5,0,-0.866,0,1,0],"quat":[0.5,0,0.866,0],"axes":[0,0,0,0,30,0],"extax":null,"conf":null}
-
-                //List<Vector3> grasshopperSinglePos = new List<Vector3>();
-                //List<Quaternion> grasshopperSingleRot = new List<Quaternion>();
-
-                for (int i = 0; i < messageComponents.Length; i++)
-                {
-                    if (messageComponents[i].Contains("Message"))
-                    //"Message(\"0,675.4,460.66,1211.6,0,0,1,0,-1,0,1,0,0\");","id"
-                    {
-                        myPlane = messageComponents[i];
-                        Debug.Log("Here is your message" + myPlane);
-
-                    }
-                }
-
-                if (myPlane != "")
-                {
-                    //  MESSAGE SHOULD BE  //  "Message(\"2,1212.5,460.66,1211.6,0,0,1,0,-1,0,1,0,0\");","id"
-                    myPlane = myPlane.Split('"')[2]; //split off the front bit
-                    Debug.Log("MY POS IS " + myPlane);
-                    //  MESSAGE SHOULD BE  //  2,1212.5,460.66,1211.6,0,0,1,0,-1,0,1,0,0\
-                    myPlane = myPlane.Replace("\\", ""); //split off the end bit
-                    //  MESSAGE SHOULD BE  //  2,1212.5,460.66,1211.6,0,0,1,0,-1,0,1,0,0
-                    //DebuLog("MY FINAL POS IS " + myPlane);
-                    string[] eachPosString = myPlane.Split(',');
-
-                    grasshopperID.Add(eachPosString[0]);
-
-                    Vector3 tempPos = new Vector3(float.Parse(eachPosString[1]), float.Parse(eachPosString[2]), float.Parse(eachPosString[3]));
-                    tempPos = new Vector3(tempPos.x / 1000.000f, tempPos.y / 1000.000f, tempPos.z / 1000.000f);//robot units to unity units
-                    tempPos = new Vector3(-1.0f * tempPos.x, tempPos.z, -1.0f * tempPos.y);//flip flop some units from robots to unity
-
-                    grasshopperPos.Add(tempPos);
-
-                    Vector3 tempRotX = new Vector3(float.Parse(eachPosString[4]), float.Parse(eachPosString[5]), float.Parse(eachPosString[6]));
-                    Vector3 tempRotY = new Vector3(float.Parse(eachPosString[7]), float.Parse(eachPosString[8]), float.Parse(eachPosString[9]));
-                    Vector3 tempRotZ = new Vector3(float.Parse(eachPosString[10]), float.Parse(eachPosString[11]), float.Parse(eachPosString[12]));
-
-                    //Plane tempRotPlane = new Plane(tempRotX, tempRotY, tempRotZ);
-                    Quaternion tempRot = Quaternion.LookRotation(tempRotZ, Vector3.up);
-                    //Vector3 tempRot = new Vector3(tempRotX, tempRotY, tempRotZ);
-                    //Quaternion tempRot = new Quaternion(float.Parse(eachRotString[0]), float.Parse(eachRotString[1]), float.Parse(eachRotString[2]), float.Parse(eachRotString[3]));
-                    tempRot = new Quaternion(-1.0f * tempRot.y, tempRot.w, -1.0f * tempRot.z, -1.0f * tempRot.x);//flip flop some units from robots to unity
-
-                    grasshopperRot.Add(tempRot);
-
-                    //Debug.Log("im adding the tempPos: " + tempPos + "to grasshopperPos");
-
-                }
-                //"Message(\"Transform: move to [802.232, 599.404, 860.99] mm and rotate to [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-                //if (myRot != "")
-                //{
-
-                    //myRot = myRot.Split(']')[3]; //grab just the end
-                    //, [0, 0, 1]
-                    //Debug.Log("temprot = " + myRot);
-                    //myRot = myRot.Split('[')[1]; //split off the front
-                    //0, 0, 1
-                    //Debug.Log("temprot = " + myRot);
-                    //myRot = myRot.Replace(" ", "");
-                    //0,0,1
-                    //Debug.Log("temprot = " + myRot);
-                    //string[] eachRotString = myRot.Split(',');
-
-                    //Vector3 tempRotZ = new Vector3(float.Parse(eachRotString[0]), float.Parse(eachRotString[1]), float.Parse(eachRotString[2]));
-                    //Vector3 tempRotY = new Vector3(float.Parse(eachRotString[3]), float.Parse(eachRotString[4]), float.Parse(eachRotString[5]));
-                    //Vector3 tempRotZ = new Vector3(float.Parse(eachRotString[6]), float.Parse(eachRotString[7]), float.Parse(eachRotString[8]));
-
-                    //Plane tempRotPlane = new Plane(tempRotX, tempRotY, tempRotZ);
-                    //Quaternion tempRot = Quaternion.LookRotation(tempRotZ, Vector3.up);
-                    //Vector3 tempRot = new Vector3(tempRotX, tempRotY, tempRotZ);
-                    //Quaternion tempRot = new Quaternion(float.Parse(eachRotString[0]), float.Parse(eachRotString[1]), float.Parse(eachRotString[2]), float.Parse(eachRotString[3]));
-                    //tempRot = new Quaternion(-1.0f * tempRot.y, tempRot.w, -1.0f * tempRot.z, -1.0f * tempRot.x);//flip flop some units from robots to unity
-
-                    //grasshopperRot.Add(tempRot);
-
-                    //Debug.Log("im adding the tempRot: " + tempRot + "to grasshopperRot");
-
-
-                //}
-
-                messageUpdated = true;
-
-
-                //Message Received from ws://127.0.0.1:6999/Bridge?name=Unity, Data : {"event":"action-issued","last"
-                //:"Message(\"from bridge\");","id":3,"pos"
-                //:[1251.913,0,1502.5],"ori":[-0.5,0,-0.866,0,1,0],"quat":[0.5,0,0.866,0],"axes":[0,0,0,0,30,0],"extax":null,"conf":null}
-
             }
             else if (e.Data.Contains("action-released"))
             {
                 textForConsole = "Action Released";
-
-
-
             }
             else if (e.Data.Contains("action-executed"))
             {
@@ -285,10 +186,6 @@ public class ConnectToMachina : MonoBehaviour
             else if (e.Data.Contains("controller-disconnected"))
             {
                 textForConsole = "Controller not Connected - Please connect Machina Bridge to a physical or virtual robot";
-                //here, i could set the position of the "actual robot" to match the "preview robot"
-                //THIS GETS RECEIVED WHETHER YOU SEND THE INSTRUCTION OR NOW... SO SOMEONE COULD BE SENDING GRASSHOPPER INSTRUCTIONS...
-
-
             }
 
             /*
@@ -335,71 +232,7 @@ public class ConnectToMachina : MonoBehaviour
 
                 slaveMove = false;
             }
-
-
-            if (messageUpdated)
-            {
-                Debug.Log("sending a message");
-
-
-
-
-                for (int i = 0; i < grasshopperPos.Count; i++)
-                {
-                    bool doesMatch = false;
-                    int matchingChild = 0;
-
-                    for(int k = 0; k<myChildren.Count;k++)
-                    {
-                        if(grasshopperID[i] == myChildren[k].name)
-                        {
-                            doesMatch = true;
-                            matchingChild = k;
-
-                        }
-                    }
-
-
-                    if(doesMatch)
-                    {
-                        //replace values
-
-                        myChildren[matchingChild].transform.localPosition = grasshopperPos[i];
-                        myChildren[matchingChild].transform.localRotation = grasshopperRot[i];
-
-                    }
-
-                    else
-                    {
-                        //make new thing
-
-                        //GameObject hello = new GameObject(grasshopperID[i]);
-                        GameObject hello = Instantiate(modelTarget, grasshopperPos[i], grasshopperRot[i]);
-                        hello.transform.SetParent(importedPointsParent.transform, false);
-                        hello.name = grasshopperID[i];
-                        //Instantiate(modelTarget, grasshopperPos[i], grasshopperRot[i]);
-
-                        //hello.transform.parent = importedPointsParent.transform;
-
-                        //hello.transform.localPosition = grasshopperPos[i];
-                        //hello.transform.localRotation = grasshopperRot[i];
-
-                        myChildren.Add(hello);
-
-                        grasshopperTargets.Add(hello);
-                    }
-
-
-                }
-
-                //HERE WE WANT TO USE THE GET POINTS COMMAND TO SET A LIST OF POINTS IN "ROBOTS_BRINGTARGETTOME"
-                gameObject.GetComponent<Robots_BringTargetToMe>().GetPoints();
-                messageUpdated = false;
-
-            }
-
         }
-
     }
 
 
