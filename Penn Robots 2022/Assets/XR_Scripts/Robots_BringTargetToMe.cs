@@ -32,6 +32,7 @@ public class Robots_BringTargetToMe : MonoBehaviour
         {
             myController = WebCamera;
         }
+
         Debug.Log("my controller is: " + myController.name);
 
         RobotTarget.transform.position = myController.transform.position;

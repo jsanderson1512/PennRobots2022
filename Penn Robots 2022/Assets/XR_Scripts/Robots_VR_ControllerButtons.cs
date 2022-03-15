@@ -72,6 +72,7 @@ public class Robots_VR_ControllerButtons : MonoBehaviour
     void DoClick(object sender, ClickedEventArgs e)
     {
         Debug.Log("hey i clicked the trigger button");
+        sceneManager.GetComponent<InClassScript>().MySpecialButton();
 
         //this.gameObject.GetComponent<Robots_DrawLine>().LineStart();
 
