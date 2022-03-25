@@ -73,7 +73,7 @@ public class Robots_VR_ControllerButtons : MonoBehaviour
     {
         Debug.Log("hey i clicked the trigger button");
         sceneManager.GetComponent<InClassScript>().MySpecialButton();
-
+        //sceneManager.GetComponent<Robots_SendInstructionToMaster>().SendToMaster();
         //this.gameObject.GetComponent<Robots_DrawLine>().LineStart();
 
     }
